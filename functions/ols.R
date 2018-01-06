@@ -3,9 +3,9 @@
 # Author: Florian Schulz ##############################################
 #######################################################################
 
-ols = function(formula, df, intercept = TRUE, var_method = "standard") {
+ols = function(formula, dataframe, intercept = TRUE, var_method = "standard") {
   # Transform formula into data frame (uses stats package)
-  data = model.frame(formula, df)
+  data = model.frame(formula, dataframe)
   
   # Define dependent variable
   y = as.matrix(data[, 1])
@@ -28,9 +28,9 @@ ols = function(formula, df, intercept = TRUE, var_method = "standard") {
   
   # Calculate variance-covariance matrix
   ## Maybe TODO: implement HAC estimators (kind of difficult, since needs weights)
-  if (var_method = "standard") {
+  if (var_method == "standard") {
     out$Vp = 1/out$df * as.numeric(crossprod(out$res)) * solve(crossprod(X))
-  } else if (var_method  = "HC") {
+  } else if (var_method  == "HC") {
     out$Vp = solve(crossprod(X))%*%(crossprod(X, diag(as.numeric(out$res^2)))%*%X)%*%solve(crossprod(X))
   } else {
     warning("Use 'standard' or 'HC' as var_method, else 'standard' will be used.")
